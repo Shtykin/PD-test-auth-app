@@ -1,4 +1,4 @@
-package ru.shtykin.pdauthapp.ui.theme
+package ru.shtykin.pdauthapp.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

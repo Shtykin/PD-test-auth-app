@@ -78,6 +78,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    implementation("com.sealwu.jsontokotlin:library:3.7.4")
 
     implementation("androidx.compose.material:material-icons-extended")
 
@@ -90,6 +91,8 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.44")
 
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
+
+    implementation("com.googlecode.libphonenumber:libphonenumber:8.13.17")
 }
 
 kapt {

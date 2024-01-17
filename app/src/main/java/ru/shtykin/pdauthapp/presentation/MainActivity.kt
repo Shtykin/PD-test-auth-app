@@ -1,6 +1,7 @@
 package ru.shtykin.pdauthapp.presentation
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -14,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.shtykin.pdauthapp.navigation.AppNavGraph
 import ru.shtykin.pdauthapp.navigation.Screen
 import ru.shtykin.pdauthapp.presentation.screen.auth.AuthScreen
+import ru.shtykin.pdauthapp.presentation.screen.main.MainScreen
 import ru.shtykin.pdauthapp.presentation.ui.theme.PDAuthAppTheme
 
 @AndroidEntryPoint
@@ -27,7 +29,6 @@ class MainActivity : ComponentActivity() {
             val uiState by viewModel.uiState
             val startScreenRoute = Screen.Auth.route
             PDAuthAppTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -37,12 +38,41 @@ class MainActivity : ComponentActivity() {
                         navHostController = navHostController,
                         authScreenContent = {
                             AuthScreen(
+                                uiState = uiState,
+                                getFlagEmoji = { viewModel.getFlagEmoji(it) },
+                                onGetCodeClick = { phone ->
+                                    viewModel.getCode(
+                                        phone = phone,
+                                        onSuccess = { }
+                                    )
+                                },
+                                onSubmitClick = { phone, code ->
+                                    viewModel.login(
+                                        phone = phone,
+                                        code = code,
+                                        onSuccess = {text ->
+                                            navHostController.navigate(Screen.Main.route) {
+                                                popUpTo(0)
+                                            }
+                                            viewModel.mainScreenOpened(text)
+                                        }
+                                    )
+                                }
+                            )
+                        },
+                        mainScreenContent = {
+                            MainScreen(
                                 uiState = uiState
                             )
+
                         }
                     )
                 }
             }
         }
+    }
+
+    private fun showToast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 }
